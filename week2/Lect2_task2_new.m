@@ -74,6 +74,12 @@ end
 
 %% Computing distances between picture histograms to find which pictures match %%
 
+%Computing cityblock distances and plotting them
+dist_sum = pdist2(h, h, 'CityBlock');
+
+figure()
+imagesc(dist_sum)
+
 %Find the 3 smallest distances between test and train histograms 
 [min_val, idx_min] = pdist2(Xtrain, Xtest, 'euclidean', 'Smallest', 3);
 classes_dist = ceil(idx_min/3); % Simple classification
