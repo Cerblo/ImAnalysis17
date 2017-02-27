@@ -36,8 +36,8 @@ function img = inpaint(img, patches)
                 % of the distance
                 weights = 1 / (1 + permute(good_distances, [3 1 2]));
                 % The missing pixel is finally replaced
-                %img(iy, ix) = randsample(set_centers,1);
-                img(iy, ix) = randsample(set_centers,1, true, weights);
+                img(iy, ix) = randsample(set_centers,1);
+                %img(iy, ix) = randsample(set_centers,1, true, weights);
             end
         end
     end
