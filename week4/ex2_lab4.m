@@ -99,3 +99,131 @@ pe_S_m = Up_Sm+Ulh_Sm; % This is the second most probable
 %% Q2.5: Yes! Minimizing energy seems to lead to good segmentation
 
 
+ %% ICM Q2.6
+ S=S_t;
+ 
+ for i=1:10
+     [LE] = label_energies(S,D,mu,alpha);
+     [M_S,S]=min(LE,[],3);
+   
+ end
+%% Display 
+ figure;
+ imagesc(S);
+ title('Segmentation after ICM Parralel update');
+ 
+  %% ICM Q2.7
+
+ 
+ 
+ C_b = checkerboard(1,size(S_t,1)/2);
+ C_b=(C_b>0.5);
+ S_even=S_t;
+ S_odd=S_t;
+ for i=1:10
+     
+     [LE_even] = label_energies(S_odd,D,mu,alpha);
+     [M_even,S_even1]=min(LE_even,[],3);
+     S_even2=C_b.*S_even1;
+     S_even=(1-C_b).*S_odd+S_even2;
+     
+     [LE_odd] = label_energies(S_even,D,mu,alpha);
+     [M_odd,S_odd1]=min(LE_odd,[],3);
+     S_odd2=(1-C_b).*S_odd1;
+     S_odd=C_b.*S_even+S_odd2;
+ end
+ 
+S=S_even2+S_odd2;
+  figure;
+ imagesc(S);
+ title('Segmentation after ICM Parralel update 1 neighbor over 2');
+ 
+ %% Questions 2.8 and 2.9
+ 
+PE_ICM=sum(sum(M_S));
+PE_ICM2=sum(sum((1-C_b).*M_odd+C_b.*M_even));
+
+%% Other initializations
+
+S_rand = randi(3,size(S_t,1),size(S_t,2));
+S=S_rand;
+
+C_b = checkerboard(1,size(S,1)/2);
+ C_b=(C_b>0.5);
+ S_even=S;
+ S_odd=S;
+ for i=1:10
+     
+     [LE_even] = label_energies(S_odd,D,mu,alpha);
+     [M_even,S_even1]=min(LE_even,[],3);
+     S_even2=C_b.*S_even1;
+     S_even=(1-C_b).*S_odd+S_even2;
+     
+     [LE_odd] = label_energies(S_even,D,mu,alpha);
+     [M_odd,S_odd1]=min(LE_odd,[],3);
+     S_odd2=(1-C_b).*S_odd1;
+     S_odd=C_b.*S_even+S_odd2;
+ end
+ 
+S=S_even2+S_odd2;
+  figure;
+ imagesc(S);
+ title('Random init Seg after ICM Parralel update 1 neighbor over 2');
+ 
+ 
+ %% Changing the weigth (alpha=0.005)
+ 
+ 
+alpha=0.005;
+S_rand = randi(3,size(S_t,1),size(S_t,2));
+S=S_rand;
+
+C_b = checkerboard(1,size(S,1)/2);
+ C_b=(C_b>0.5);
+ S_even=S;
+ S_odd=S;
+ for i=1:10
+     
+     [LE_even] = label_energies(S_odd,D,mu,alpha);
+     [M_even,S_even1]=min(LE_even,[],3);
+     S_even2=C_b.*S_even1;
+     S_even=(1-C_b).*S_odd+S_even2;
+     
+     [LE_odd] = label_energies(S_even,D,mu,alpha);
+     [M_odd,S_odd1]=min(LE_odd,[],3);
+     S_odd2=(1-C_b).*S_odd1;
+     S_odd=C_b.*S_even+S_odd2;
+ end
+ 
+S=S_even2+S_odd2;
+  figure;
+ imagesc(S);
+ title('Random init + alpha=0.005 Seg after ICM Parralel update 1 neighbor over 2');
+ 
+ %% Changing the weigth (alpha=0.00005)
+ 
+alpha=0.00005;
+S_rand = randi(3,size(S_t,1),size(S_t,2));
+S=S_rand;
+
+C_b = checkerboard(1,size(S,1)/2);
+ C_b=(C_b>0.5);
+ S_even=S;
+ S_odd=S;
+ for i=1:10
+     
+     [LE_even] = label_energies(S_odd,D,mu,alpha);
+     [M_even,S_even1]=min(LE_even,[],3);
+     S_even2=C_b.*S_even1;
+     S_even=(1-C_b).*S_odd+S_even2;
+     
+     [LE_odd] = label_energies(S_even,D,mu,alpha);
+     [M_odd,S_odd1]=min(LE_odd,[],3);
+     S_odd2=(1-C_b).*S_odd1;
+     S_odd=C_b.*S_even+S_odd2;
+ end
+ 
+S=S_even2+S_odd2;
+  figure;
+ imagesc(S);
+ title('Random init + alpha=0.00005 Seg after ICM Parralel update 1 neighbor over 2');
