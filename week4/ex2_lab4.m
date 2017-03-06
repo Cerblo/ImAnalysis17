@@ -34,26 +34,25 @@ S_t(D > 160) = 3;
  %% Displays 
  
  figure;
- subplot(1,4,1);
+ subplot(2,2,1);
  imagesc(D);
  colormap parula;
  title('Initial noisy image');
  
- subplot(1,4,2);
+ subplot(2,2,2);
 imagesc(S_gt);
 title('S_gt');
  
- subplot(1,4,3);
+ subplot(2,2,3);
  imagesc(S_t);
  colormap parula;
  title('Segmentation 1 image');
-colorbar;
  
- subplot(1,4,4);
+ subplot(2,2,4);
  imagesc(S_m);
  colormap parula;
  title('Segmentation 2 image');
- colorbar;
+
  
 
  
@@ -107,10 +106,19 @@ pe_S_m = Up_Sm+Ulh_Sm; % This is the second most probable
      [M_S,S]=min(LE,[],3);
    
  end
+ 
+
 %% Display 
  figure;
+ subplot(1,2,1);
  imagesc(S);
- title('Segmentation after ICM Parralel update');
+ title('Segmentation after ICM Parralel 10 iterations');
+
+  [LE] = label_energies(S,D,mu,alpha);
+ [M_S,S]=min(LE,[],3);
+ subplot(1,2,2);
+ imagesc(S);
+ title('Segmentation after ICM Parralel 11 iterations');
  
   %% ICM Q2.7
 
@@ -135,9 +143,23 @@ pe_S_m = Up_Sm+Ulh_Sm; % This is the second most probable
  
 S=S_even2+S_odd2;
   figure;
+  subplot(1,2,1)
  imagesc(S);
- title('Segmentation after ICM Parralel update 1 neighbor over 2');
+ title('Segmentation after ICM Parallel 10 iterations');
  
+[LE_even] = label_energies(S_odd,D,mu,alpha);
+[M_even,S_even1]=min(LE_even,[],3);
+S_even2=C_b.*S_even1;
+S_even=(1-C_b).*S_odd+S_even2;
+
+[LE_odd] = label_energies(S_even,D,mu,alpha);
+[M_odd,S_odd1]=min(LE_odd,[],3);
+S_odd2=(1-C_b).*S_odd1;
+S_odd=C_b.*S_even+S_odd2;
+ 
+  subplot(1,2,2)
+ imagesc(S);
+ title('Segmentation after ICM Parallel 11 iterations');
  %% Questions 2.8 and 2.9
  
 PE_ICM=sum(sum(M_S));
@@ -167,9 +189,27 @@ C_b = checkerboard(1,size(S,1)/2);
  
 S=S_even2+S_odd2;
   figure;
+  subplot(1,2,1)
  imagesc(S);
- title('Random init Seg after ICM Parralel update 1 neighbor over 2');
+ title('Random init Seg ICM Parralel 10 iterations');
  
+
+ [LE_even] = label_energies(S_odd,D,mu,alpha);
+ [M_even,S_even1]=min(LE_even,[],3);
+ S_even2=C_b.*S_even1;
+ S_even=(1-C_b).*S_odd+S_even2;
+
+ [LE_odd] = label_energies(S_even,D,mu,alpha);
+ [M_odd,S_odd1]=min(LE_odd,[],3);
+ S_odd2=(1-C_b).*S_odd1;
+ S_odd=C_b.*S_even+S_odd2;
+     
+
+  subplot(1,2,2)
+ imagesc(S);
+ title('Random init Seg ICM Parralel 11 iterations');
+     
+ PE_ICM3=sum(sum((1-C_b).*M_odd+C_b.*M_even));
  
  %% Changing the weigth (alpha=0.005)
  
@@ -197,8 +237,24 @@ C_b = checkerboard(1,size(S,1)/2);
  
 S=S_even2+S_odd2;
   figure;
+  subplot(1,2,1)
  imagesc(S);
- title('Random init + alpha=0.005 Seg after ICM Parralel update 1 neighbor over 2');
+ title('Random init + alpha=0.005 Seg after ICM Parralel 10 iterations');
+ 
+      
+     [LE_even] = label_energies(S_odd,D,mu,alpha);
+     [M_even,S_even1]=min(LE_even,[],3);
+     S_even2=C_b.*S_even1;
+     S_even=(1-C_b).*S_odd+S_even2;
+     
+     [LE_odd] = label_energies(S_even,D,mu,alpha);
+     [M_odd,S_odd1]=min(LE_odd,[],3);
+     S_odd2=(1-C_b).*S_odd1;
+     S_odd=C_b.*S_even+S_odd2;
+     
+    subplot(1,2,2)
+ imagesc(S);
+ title('Random init + alpha=0.005 Seg after ICM Parralel 11 iterations');   
  
  %% Changing the weigth (alpha=0.00005)
  
@@ -225,5 +281,20 @@ C_b = checkerboard(1,size(S,1)/2);
  
 S=S_even2+S_odd2;
   figure;
+  subplot(1,2,1)
  imagesc(S);
- title('Random init + alpha=0.00005 Seg after ICM Parralel update 1 neighbor over 2');
+ title('Random init + alpha=0.00005 Seg after ICM Parralel 10 iterations');
+ 
+      [LE_even] = label_energies(S_odd,D,mu,alpha);
+     [M_even,S_even1]=min(LE_even,[],3);
+     S_even2=C_b.*S_even1;
+     S_even=(1-C_b).*S_odd+S_even2;
+     
+     [LE_odd] = label_energies(S_even,D,mu,alpha);
+     [M_odd,S_odd1]=min(LE_odd,[],3);
+     S_odd2=(1-C_b).*S_odd1;
+     S_odd=C_b.*S_even+S_odd2;
+     
+       subplot(1,2,2)
+ imagesc(S);
+ title('Random init + alpha=0.00005 Seg after ICM Parralel 11 iterations');
