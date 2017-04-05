@@ -20,8 +20,8 @@ pixDiff = [-1,1;-1,1];
 pixDiff_t = [-1,-1;1,1];
 
 % Window derivatives
-win1_dx = imfilter(I1, centrDiff, 'same', 'conv') + imfilter(I2, centrDiff, 'same', 'conv');
-win1_dy = imfilter(I1, centrDiff_t, 'same', 'conv') + imfilter(I2, centrDiff_t, 'same', 'conv');
+win1_dx = imfilter(I1, centrDiff, 'same', 'conv');
+win1_dy = imfilter(I1, centrDiff_t, 'same', 'conv');
 
 A = zeros(9,2);
 b = zeros(9,1);
@@ -47,12 +47,12 @@ U = zeros(r);
 V = zeros(r);
 
 % Central difference
-% img_dx = imfilter(I1, centrDiff, 'same', 'conv') + imfilter(I2, centrDiff, 'same', 'conv');
-% img_dy = imfilter(I1, centrDiff_t, 'same', 'conv') + imfilter(I2, centrDiff_t, 'same', 'conv');
+% img_dx = imfilter(I1, centrDiff, 'same', 'conv');
+% img_dy = imfilter(I1, centrDiff_t, 'same', 'conv');
 
 % Pixel difference
-img_dx = imfilter(I1, pixDiff, 'same', 'conv') + imfilter(I2, pixDiff, 'same', 'conv');
-img_dy = imfilter(I1, pixDiff_t, 'same', 'conv') + imfilter(I2, pixDiff_t, 'same', 'conv');
+img_dx = imfilter(I1, pixDiff, 'same', 'conv');
+img_dy = imfilter(I1, pixDiff_t, 'same', 'conv');
 
 for y_i = 2:r-1
     for x_i = 2:c-1
