@@ -46,7 +46,9 @@ for y_i = 2:r-1
 
         win1_dx = [img_dx(y_i-1,x_i-1:x_i+1); img_dx(y_i,x_i-1:x_i+1); img_dx(y_i+1,x_i-1:x_i+1)];
         win1_dy = [img_dy(y_i-1,x_i-1:x_i+1); img_dy(y_i,x_i-1:x_i+1); img_dy(y_i+1,x_i-1:x_i+1)];
-                        
+        
+        % (start) 'Complicated' method -------------------------------------------------------------------
+        % Working...
         r = 1;
         
         for r_i = 1:3
@@ -71,6 +73,37 @@ for y_i = 2:r-1
         end
         
         opt_flow = (A' * A)\(A' * b);
+        % (end) 'Complicated' method -------------------------------------------------------------------
+        
+        % (start) 'More efficient' method --------------------------------------------------------------
+        % Not working so far...
+%         win_dt = win2 - win1;
+%                         
+%         a1 = sum(sum(win1_dx^2));
+%         a2 = sum(sum(win1_dx * win1_dy));
+%         a3 = sum(sum(win1_dy * win1_dx));
+%         a4 = sum(sum(win1_dy^2));
+%         
+%         A = [a1, a2; a3, a4];
+%         
+%         b1 = sum(sum(win1_dx * win_dt));
+%         b2 = sum(sum(win1_dy * win_dt));
+%         
+%         b = [-b1; -b2];
+%         
+%         rcond_est = rcond(A);
+%         rc_ratio = rcond_est/eps;
+%         if(rc_ratio <= 1)
+% %             fprintf('\nA*u = b is ill-posed, i.e. A''*A does not have an inverse.\nThis pixel is skipped.\n')
+% %             A
+% %             rcond_est
+% %             rc_ratio
+%             pix_skipped = pix_skipped + 1;
+%             continue
+%         end
+%         
+%         opt_flow = A\b;
+        % (end) 'More efficient' method -------------------------------------------------------------------
         
         X(y_i,x_i) = x_i;
         Y(y_i,x_i) = y_i;
