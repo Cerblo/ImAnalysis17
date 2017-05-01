@@ -51,7 +51,7 @@ for iter=1:nb_iter
 %     targ=t(idx,:);
 %     
 
-%Going linearly through all the dataset, building epochs (SHUFFLING)
+%Going linearly through all the dataset, building epochs
     weigths(1).z=x(1+(iter_data-1)*mb_size:iter_data*mb_size,:);
     
     targ=t(1+(iter_data-1)*mb_size:iter_data*mb_size,:);
@@ -80,24 +80,26 @@ for iter=1:nb_iter
             weigths(nb_hl+1).z = softmax_func( weigths(nb_hl+1).a);
            
     %Backpropag
-    %Last Layer
+    
     weigths(nb_hl+1).delta = weigths(nb_hl+1).z - targ;
    
     weigths(nb_hl+1).w = weigths(nb_hl+1).w - lrate*1/mb_size*weigths(nb_hl).z'*weigths(nb_hl+1).delta ;
-   %Other Layers
+   
     for l=1:nb_hl-1
         
         weigths(nb_hl-l+1).delta =max(0, weigths(nb_hl-l+1).a ./abs(weigths(nb_hl-l+1).a)).*(weigths(nb_hl-l+2).delta*weigths(nb_hl-l+2).w') ;
         weigths(nb_hl-l+1).b = weigths(nb_hl-l+1).b - lrate *mean(weigths(nb_hl-l+2).delta,1) ;  
         weigths(nb_hl-l+1).w = weigths(nb_hl-l+1).w - lrate*1/mb_size*weigths(nb_hl-l).z'*weigths(nb_hl-l+1).delta ;
     end 
-    %First Layer
+
     weigths(1).b = weigths(1).b - lrate *mean(weigths(2).delta,1) ;  
    
-    %Estimate the error per iteration
+    %Estimate the error
     z_true=weigths(nb_hl+1).z;
-    y_est = z_true>= 0.5;
-    err(iter,1)=norm(y_est-targ)/sqrt(mb_size)*100;
+    [max_y_e,ind_ye] = max(z_true,[],2);
+    [max_y_test, ind_y_test]=max(targ,[],2);
+    
+    err(iter,1)=sum(ind_ye~=ind_y_test)/mb_size*100;
 end
 
 

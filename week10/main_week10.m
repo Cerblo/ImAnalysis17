@@ -39,13 +39,16 @@ X_test=data(50001:60000,:);
 y_train=label(1:50000,:);
 y_test=label(50001:60000,:);
 %Train
-[error,err_ep,weigths]= nn_train_flex_mb( X_train, y_train, 0.08,4000,200,100);
+[error,err_ep,weigths]= nn_train_flex_mb( X_train, y_train, 0.05,6000,[420,250],100);
+
 
 %Predict
 y_e = nn_predict_flex(X_test,weigths);
-y_est=y_e>=0.5;
+[max_y_e,ind_ye] = max(y_e,[],2);
+[max_y_test, ind_y_test]=max(y_test,[],2);
 
-err=norm(y_est-y_test)/sqrt(10000)*100;
+
+err=sum(ind_ye~=ind_y_test)/10000*100;
 
 figure(1)
 plot(error);
