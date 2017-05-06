@@ -39,7 +39,7 @@ X_test=data(50001:60000,:);
 y_train=label(1:50000,:);
 y_test=label(50001:60000,:);
 %Train
-[error,err_ep,weigths]= nn_train_flex_mb( X_train, y_train, 0.05,6000,[420,250],100);
+[error,err_ep,weigths]= nn_train_flex_mb( X_train, y_train, 0.05,6000,[400,250],100);
 
 
 %Predict
